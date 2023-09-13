@@ -61,6 +61,11 @@
         "xstring": "cpp",
         "xtr1common": "cpp",
         "xtree": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "bitset": "cpp",
+        "string_view": "cpp",
+        "stacktrace": "cpp",
+        "regex": "cpp",
+        "valarray": "cpp"
     }
 }

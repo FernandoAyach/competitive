@@ -1,12 +1,8 @@
-11
-landtrue123
-i think 2 cats
-is a healthy
-amount to have.
-kaer987
-i have 3 and it
-is complicated
-stream1
-it depends, all
-you need is a
-mischievous 1
+7
+2 0
+1 2
+3 1
+4 3
+5 4
+6 4
+7 5

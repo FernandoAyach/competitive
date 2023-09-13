@@ -7,132 +7,99 @@
 #include <sstream>
 
 using namespace std;
-
-#define FOR(i, w, n) for (int i = w; i < (int)n; i++)
+ 
+#define FOR(i, n) for(int i = 0; i < (int) n; i++)
+#define PB push_back
 #define all(x) x.begin(), x.end()
 #define rall(x) x.rbegin(), x.rend()
-#define PB push_back
 #define F first
 #define S second
-
-#define INF 1000000007
-#define MAX 1007
-#define SIZE 30
-
+ 
 typedef long long ll;
-typedef unsigned long long llu;
 typedef vector<int> vi;
-typedef pair<int, int> pii;
+typedef pair<int,int> pii;
 
-inline bool isDigitWithWord(string s, int i, int n) {
-    return isdigit(s[i]) && (
-        (i >= 1 && isalpha(s[i - 1])) || 
-        (i < n - 1 && isalpha(s[i + 1]))
-    );
+const int MOD = 1e9+7;
+const int MAX = 507;
+const int INF = 0x3f3f3f3f;
+
+bool eh_delimitador(char c){
+    return c==' '||c=='.'||c==',';
 }
 
-inline bool isDelimitador(char c) {
-    return c == ' ' || c == '.' || c == ',';
-} 
-
-inline bool isDelimitadorBetweenNumbers(string s, int i, int n) {
-    return isDelimitador(s[i]) && (
-        (i >= 1 && isdigit(s[i - 1])) && 
-        (i < n - 1 && isdigit(s[i + 1]))
-    );
-} 
-
-int toNumber(string s) {
-    int ans = 0;
-    for(auto& c : s) {
-        if(c != '*') {
-            ans = ans * 10 + (c - '0');
-        }
+// dado uma string da forma regex (\d+\*)*\d+
+// e retorna ele em inteiro long long ou -1 se n for numero
+ll get_num(string s){
+    ll ans = 0;
+    for(auto& c : s){
+        if(isalpha(c)) return -1;
+        if(c=='*') continue;
+        ans = ans*10 + (c-'0');
     }
     return ans;
 }
 
-int isNumber(string s) {
-    for(auto& c : s) {
-        if(c - '0' < 0 || c - '0' > 9) return false;
-    }
-    return true;
-}
+int main(){
+    ios::sync_with_stdio(false); cin.tie(0);
 
-int64_t solve() {
-    int n, size = 0; cin >> n;
-    string s;
-    
-    FOR(i, 0, n + 1) {
+    int n; cin >> n;
+    cin.ignore(1);
+    vector<ll> numeros;
+    FOR(_, n){
         string line;
         getline(cin, line);
 
-        s += line  + " \n"[i == n];
-    }
+        //Passo 1: transformar para letra numeros com palavras
+        // e.g.: 123blue => aaablue, fast123 => fastaaa, a2a => aaa
+        int k = line.size();
+        for(int i = 1; i < k; ++i)
+            if(isalpha(line[i-1])&&isdigit(line[i]))
+                line[i]='a';
+        for(int i = k-2; i>=0; --i)
+            if(isalpha(line[i+1])&&isdigit(line[i]))
+                line[i]='a';
 
-    size = s.size();
+        //Passo 2: juntar digitos com delimitador com *
+        // e.g.: 2,5 412.6 => 2*5*412*6
+        for(int i = 1; i < k-1; ++i)
+            if(isdigit(line[i-1])
+								&&eh_delimitador(line[i])
+								&&isdigit(line[i+1]))
+                line[i]='*';
 
-    FOR(i, 0, size) {
-        if(isDigitWithWord(s, i, size)) {
-            s[i] = 'a';
-        } 
-    }
+        //Passo 3: trocar todos os delimitadores por espaço
+				// (isso vai facilitar nossa vida quando usarmos o iss)
+        for(int i = 0; i < k; ++i)
+            if(eh_delimitador(line[i])) line[i]=' ';
 
-    FOR(i, 0, size) {
-        if(isDelimitadorBetweenNumbers(s, i, size)) {
-            s[i] = '*';
+        istringstream iss(line);
+        string palavra;
+        while(iss >> palavra){
+            ll num = get_num(palavra);
+            if(num!=-1) numeros.PB(num);
         }
     }
 
-    FOR(i, 0, size) {
-        if(isDelimitador(s[i])) {
-            s[i] = ' ';
-        }
-    }
-    vi ans(MAX);
-    int c = 0;
+    //Procurando alguma tripla (X-1, X, X+1)
+    bool tem_resposta = false;
+    FOR(i, numeros.size()){
+        bool tem_menos_um=false, tem_mais_um=false;
 
-    stringstream iss(s);
-    string word;
-    while(iss >> word) {
-        if(word.find('*') != std::string::npos || isNumber(word)) {
-            ans[c] = toNumber(word);
-            c++;
-        }
-    }
-    
-    bool found = false;
-    
-    for(int i = 0; i < c - 1; i++) {
-        if(found) break;
+        for(int j = i-1; j >=0 && !tem_menos_um; --j)
+            tem_menos_um = (numeros[j] == numeros[i]-1);
 
-        int y = 0;
-        int current = ans[i];
-        for(int j = 0; j < c; j++) {
-            if(ans[j] == current + 1) {
-                y++;
-                current = ans[j];
-            }
+        for(int j = i+1; j<(int)numeros.size() 
+                && !tem_mais_um; ++j)
+            tem_mais_um = (numeros[j] == numeros[i]+1);
 
-            if(y == 2) {
-                found = true;
-                break;
-            }
+        if(tem_mais_um&&tem_menos_um){
+            tem_resposta = true;
+            break; // sai do for
         }
     }
 
-    cout << (found ? "123" : ":)") << "\n";
+    if(tem_resposta) cout << "123\n";
+    else cout << ":)\n";
 
-    return 0;
-}
-
-int main() {
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-
-    solve();
-    
     return 0;
 }
