@@ -1,5 +1,13 @@
 {
     "files.associations": {
-        "ios": "cpp"
+        "ios": "cpp",
+        "iostream": "cpp",
+        "random": "cpp",
+        "xiosbase": "cpp",
+        "vector": "cpp",
+        "iosfwd": "cpp",
+        "queue": "cpp",
+        "stack": "cpp",
+        "xtree": "cpp"
     }
 }
