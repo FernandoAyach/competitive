@@ -1,7 +1,0 @@
-df bb cg df df 
-ee az cg az ee 
-df cg cg df df 
-az az cg az az 
-11 6 10 6 
-6 7 8 6 6 
-az 0 bb 0 cg 0 df 0 ee 0 
