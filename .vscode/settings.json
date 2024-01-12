@@ -8,6 +8,13 @@
         "iosfwd": "cpp",
         "queue": "cpp",
         "stack": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "ostream": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "span": "cpp",
+        "xstring": "cpp",
+        "xutility": "cpp"
     }
 }

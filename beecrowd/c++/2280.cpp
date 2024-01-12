@@ -25,47 +25,30 @@ void setup() {
 	cin.tie(0);
 }
 
-vi graph[MAX];
-vb vis(MAX);
-
-int n;
-bool balanced = true;
-
-int isBalanced(int u) {
-	int f = 0, p = 0, t = 0;
-	vis[u] = true;
-
-	for(auto& v : graph[u]) {
-		p = f;
-		if(!vis[v]) {
-			f = isBalanced(v);
-			t += f;
-		}
-
-		if(p != 0 && p != f) balanced = false;
-	}
-
-	return t + 1;
-}
-
 int64_t solve() {
-	cin >> n;
+    string cipher, crib; 
+    getline(cin, cipher);
+    getline(cin, crib);
+    int ans = 0, j = 0;
 
-	for(int i = 0; i < n; i++) {
-		int a, b; cin >> a >> b;
-		graph[a].push_back(b);
-		graph[b].push_back(a);
-	}
-
-	isBalanced(0);
-
-	cout << (balanced ? "bem" : "mal") << "\n";
+    for(int i = 0; i <= cipher.size() - crib.size(); i++) {
+        bool count = true;
+        j = i;
+        for(auto& c : crib) {
+            if(c == cipher[j]) {
+                count = false;
+                break;
+            }
+            j++;
+        }
+        if(count) ans++;
+    }
 	
-	return 0;
+	return ans;
 }
  
 int main() {
 	setup();
-	solve();
+	cout << solve() << "\n";
 	return 0;
 }
