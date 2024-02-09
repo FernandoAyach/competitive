@@ -16,36 +16,18 @@ typedef vector<pii> vpi;
 const ll INF = 1e9+7;
 const ll MAX = 1e5+7;
 
-bool despojado(ll x) {
-    int c = 0;
-
-    for(ll i = 2; i * i <= x; i++) {
-        if(x % i == 0) {
-            x /= i;
-            c++;
-            while(x % i == 0) {
-                return false;
-            }
-        }
-    }
-    if(x > 1) c++;
-
-    if(c < 2) return false;
-
-    return true;
+int anamariabraga(int n, int p) {
+    if(n == 1) return 0;
+    
+    return (anamariabraga(n - 1, p) + p % n);
 }
-
+ 
 int64_t solve() {
-    ll n, ans = 0; cin >> n;
-
-    for(ll i = 1; i * i <= n; i++) {
-        if(n % i == 0) {
-            if(despojado(i)) ans++;
-            if(i != n / i && despojado(n / i)) ans++;
-        }
+    int n, p;
+    while(cin >> n >> p) {
+        cout << anamariabraga(n, p) << "\n";
     }
-   
-    return ans;
+    return 0;
 }
  
 int main() {
@@ -53,6 +35,6 @@ int main() {
     freopen("../../output.txt","w", stdout);
     ios::sync_with_stdio(false);
     cin.tie(0);
-    cout << solve() << "\n";
+    solve();
     return 0;
 }

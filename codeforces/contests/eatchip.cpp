@@ -26,38 +26,13 @@ void setup(){
 }
 
 int64_t solve() {
-    int n, ans = 0; cin >> n;
-    string a, b;
-    cin >> a >> b;
-
-    for(int i = 0; i < n; i++) {
-        if(a[i] != b[i]) {
-            for(int j = i + 1; j < n; j++) {
-                if(a[i] != a[j] && a[j] != b[j]) {
-                    swap(a[i], a[j]);
-                    ans++;
-                }
-            }
-            if(a[i] != b[i]) {
-                a[i] = b[i];
-                ans++;
-            }
-        }
     
-        if(a == b) return ans;
-    }
-
-    return ans;
+    return 0;
 }
  
 int main() {
 	setup();
-
     int t; cin >> t;
-
-    for(int i = 0; i < t; i++) {
-        cout << solve() << "\n";
-    }
-	
+    while(t--) solve();
 	return 0;
 }
